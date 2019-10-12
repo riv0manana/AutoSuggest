@@ -24,9 +24,26 @@ const AutoSuggest = props => {
   };
 
   const handleSelect = selectedItemObject => {
-    hideSuggestion();
     onSelect(selectedItemObject);
+    hideSuggestion();
   };
+
+  const handleEscPress = e => {
+    if(e.key === "Escape"){
+      setOpen(false);
+    }
+  }
+
+  /*
+   * Add KeyDown listener for Escape key
+   */
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleEscPress)
+    return () => {
+      document.removeEventListener('keydown', handleEscPress)
+    }
+  }, [])
 
   React.useEffect(() => {
     if (value === undefined || value.length <= 0 || collections === undefined) {
@@ -42,7 +59,7 @@ const AutoSuggest = props => {
     } else {
       hideSuggestion();
     }
-  }, [value]);
+  }, [value, collections, anchorEl, fieldName]);
 
   const ItemList = () => {
     return (
